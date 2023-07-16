@@ -1,1 +1,1 @@
-web: guniconrn supun_maximus.wsgi
+web: gunicorn supun_maximus.wsgi
