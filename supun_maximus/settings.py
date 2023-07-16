@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Check if the 'env.py' file exists
 if os.path.exists('env.py'):
@@ -30,20 +31,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+development = os.environ.get('DEVELOPMENT', False)
+DEBUG = development
 
-ALLOWED_HOSTS = ['http://127.0.0.1:8000/',]
+if development:
+    # Allow localhost for development
+    ALLOWED_HOSTS = ['http://127.0.0.1:8000/',]
+else:
+     # Allow Heroku hostname for production
+    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # thirdpary apps
+
+    # local apps
+    'main_page',
 ]
 
 MIDDLEWARE = [
@@ -79,13 +92,17 @@ WSGI_APPLICATION = 'supun_maximus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    }
 
 
 # Password validation
