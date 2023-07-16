@@ -58,7 +58,7 @@ if development:
     ALLOWED_HOSTS = ['127.0.0.1:8000']
 else:
     # Allow Heroku hostname for production
-    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
+    ALLOWED_HOSTS = ['supun-maximus-f8f5a3f71979.herokuapp.com']
 
 
 # Application definition
