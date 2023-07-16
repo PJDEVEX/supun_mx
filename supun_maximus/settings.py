@@ -51,7 +51,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 development = os.environ.get('DEVELOPMENT', False)
-DEBUG = development
+DEBUG = True # development
 
 if development:
     # Allow localhost for development
